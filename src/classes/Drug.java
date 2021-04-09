@@ -13,7 +13,6 @@ public class Drug {
 
     //TODO: list of side effects
 
-
     public Drug(String name, String manufacturer, double price, String prospect, HashMap<String, Double> ingredients) {
         this.name = name;
         this.manufacturer = manufacturer;

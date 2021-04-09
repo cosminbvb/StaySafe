@@ -6,7 +6,7 @@ public class Doctor extends User {
 
     private String speciality;
     private double salary;
-    private final Date hireDate;
+    private final Date hireDate; // TODO: convert to LocalDate
 
     public Doctor(String firstName, String lastName, long CNP, String dateOfBirth, String phoneNumber,
                   String emailAddress, String password, String speciality, double salary, Date hireDate) {
@@ -39,12 +39,11 @@ public class Doctor extends User {
     @Override
     public String toString() {
         return "Doctor{" +
-                ", id=" + id +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                "speciality='" + speciality + '\'' +
+                ", speciality='" + speciality + '\'' +
                 ", hireDate=" + hireDate +
-                ", salary=" + salary +
                 '}';
     }
 }

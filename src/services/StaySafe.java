@@ -2,7 +2,11 @@ package services;
 
 import classes.*;
 import com.sun.source.tree.Tree;
+import jdk.swing.interop.SwingInterOpUtils;
 
+import javax.print.Doc;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class StaySafe {
@@ -13,8 +17,9 @@ public class StaySafe {
     private final List<Nurse> nurses = new ArrayList<>();
     private final List<MedicalCenter> centers = new ArrayList<>();
     private final List<Drug> drugs = new ArrayList<>();
-    private final List<Appointment> pendingAppointments = new ArrayList<>();
+    private final TreeSet<Appointment> pendingAppointments = new TreeSet<>();
     //these represent the requested but not yet assigned to doctors and nurses appointments
+    //fifo => they need to be ordered by date
 
     private static StaySafe instance = null;
 
@@ -218,7 +223,7 @@ public class StaySafe {
         // users can request appointments which will be stored in pending appointments
         // until a nurse assigns it
         if (user == null) {
-            System.out.println("You need to log in first (Press 2 to Log In or 1 to create a new account");
+            System.out.println("You need to log in first (Press 2 to Log In or 1 to create a new account)");
         }
         else if (user instanceof Doctor || user instanceof Nurse) {
                 System.out.println("You need to log in with a Patient account");
@@ -244,7 +249,7 @@ public class StaySafe {
             System.out.println("Start by describing the issue:");
             String description = input.nextLine();
 
-            Appointment requested = new Appointment((Patient) user, new Date(), mc, description);
+            Appointment requested = new Appointment((Patient) user, LocalDate.now(), mc, description);
             pendingAppointments.add(requested);
             System.out.println("Appointment requested. You will be contacted shortly, once your request has been processed\n");
             // this either has to be added to user upcoming appointments
@@ -256,7 +261,7 @@ public class StaySafe {
     public void getUpcomingAppointments(){
         // every type of user can see his upcoming appointments //
         if (user == null) {
-            System.out.println("You need to log in first (Press 2 to Log In or 1 to create a new account");
+            System.out.println("You need to log in first (Press 2 to Log In or 1 to create a new account)");
         }
         else{
             TreeSet<Appointment> upcomingAppointments = user.getUpcomingAppointments();
@@ -274,7 +279,7 @@ public class StaySafe {
 
     public void getAppointmentHistory(){
         if (user == null) {
-            System.out.println("You need to log in first (Press 2 to Log In or 1 to create a new account");
+            System.out.println("You need to log in first (Press 2 to Log In or 1 to create a new account)");
         }
         else if (user instanceof Doctor || user instanceof Nurse) {
             System.out.println("You need to log in with a Patient account");
@@ -297,7 +302,169 @@ public class StaySafe {
         // Doctors and Nurses have the ability to process appointments
         // Meaning that a staff member will read the issue description and will
         // make an assignment based on the given description
-        return;
+        if (user == null) {
+            System.out.println("You need to log with a staff member account\n");
+        }
+        else if (user instanceof Patient) {
+            System.out.println("Patients not allowed\n");
+        }
+        else{
+            Scanner input = new Scanner(System.in);
+            Appointment appointment = pendingAppointments.pollFirst();
+            if(appointment == null){
+                System.out.println("There are no requested appointments\n");
+                return;
+            }
+            System.out.println("Assign a doctor:");
+            while (true){
+                System.out.println("Doctor's first name: ");
+                String firstName = input.nextLine();
+                System.out.println("Doctor's last name: ");
+                String lastName = input.nextLine();
+                Doctor doc = findDoctor(firstName, lastName);
+                if (doc == null){
+                    System.out.println("Doctor not found. Press 1 to try again or 0 to abort request processing");
+                    int command = Integer.parseInt(input.nextLine());
+                    if(command == 0){
+                        System.out.println("Request processing aborted\n");
+                        pendingAppointments.add(appointment); // add appointment back in line
+                        return;
+                    }
+                }
+                else{
+                    appointment.setDoctor(doc); // assign doctor to the current appointment
+                    doc.addUpcomingAppointment(appointment); // insert it into the doctor's schedule
+                    break;
+                }
+            }
+            appointment.setNurse((Nurse) user); // assign nurse to the current appointment
+            user.addUpcomingAppointment(appointment); // assuming that the nurse that is processing the request will attend it
+
+            System.out.println("Date:");
+            String stringDate = input.nextLine();
+            LocalDate date = LocalDate.parse(stringDate);
+
+            appointment.getPatient().addUpcomingAppointment(appointment); // insert it into the patient's schedule
+
+            System.out.println("The request as been processed.");
+            System.out.println(appointment.toString());
+
+        }
+    }
+
+    public void searchDoctor(){
+        Scanner input = new Scanner(System.in);
+        while (true){
+            System.out.println("Enter first name: ");
+            String firstName = input.nextLine();
+            System.out.println("Enter last name: ");
+            String lastName = input.nextLine();
+            Doctor doc = findDoctor(firstName, lastName);
+            if (doc == null){
+                System.out.println("Doctor not found. Press 0 to exit or 1 to try again");
+                int command = Integer.parseInt(input.nextLine());
+                if(command == 0)
+                    break;
+            }
+            else{
+                System.out.println(doc.toString()+"\n");
+                break;
+            }
+        }
+    }
+
+    public void searchDrug(){
+        if (user == null) {
+            System.out.println("You need to log with a staff member account\n");
+        }
+        else if (user instanceof Patient) {
+            System.out.println("Patients not allowed\n");
+        }
+        else{
+            Scanner input = new Scanner(System.in);
+            while (true){
+                System.out.println("Enter drug name: ");
+                String name = input.nextLine();
+                Drug drug = findDrug(name);
+                if (drug == null){
+                    System.out.println("Drug not found. Press 0 to exit or 1 to try again");
+                    int command = Integer.parseInt(input.nextLine());
+                    if(command == 0)
+                        break;
+                }
+                else{
+                    System.out.println(drug.toString()+"\n");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void giveResponse(){
+        // Intended for staff members - here they can give a treatment and leave notes for the patient
+        // This was designed for a f2f situation
+        if (user == null) {
+            System.out.println("You need to log with a staff member account\n");
+        }
+        else if (user instanceof Patient){
+            System.out.println("Patients not allowed\n");
+        }
+        else{
+            // first we need get the most recent appointment
+            Appointment currentAppointment = user.getUpcomingAppointments().first();
+
+            // construct a response:
+            Scanner input = new Scanner(System.in);
+            System.out.println("Enter description: ");
+            String description = input.nextLine();
+            HashMap<Drug, Integer> treatmentPlan = new HashMap<>();
+            List<Drug> givenDrugs = new ArrayList<>(); // for the bill
+
+            while (true){
+                System.out.println("Drug name: ");
+                String name = input.nextLine();
+                Drug drug = findDrug(name);
+                if (drug == null){
+                    System.out.println("Drug not found, try again");
+                }
+                else{
+                    System.out.println("Enter hour interval:");
+                    int interval = Integer.parseInt(input.nextLine());
+                    treatmentPlan.put(drug, interval);
+                    givenDrugs.add(drug);
+                    System.out.println("Press 0 to add another drug or 1 to finish");
+                    int command = Integer.parseInt(input.nextLine());
+                    if(command == 1)
+                        break;
+                }
+            }
+
+            // construct the bill
+            Bill bill = new Bill(givenDrugs, currentAppointment.getPatient(),
+                    currentAppointment.getDoctor(), LocalDate.now());
+
+
+            Response response = new Response(description, treatmentPlan, bill);
+
+            // add all the response the current appointment
+            currentAppointment.setResponse(response);
+
+            // remove the appointment from the upcoming set for the doctor, nurse and patient
+            // add it to the patient's history
+
+            Patient patient = currentAppointment.getPatient();
+            Doctor doctor = currentAppointment.getDoctor();
+            Nurse nurse = currentAppointment.getNurse();
+            patient.getUpcomingAppointments().remove(currentAppointment);
+            patient.getAppointmentsHistory().add(currentAppointment);
+            doctor.getUpcomingAppointments().remove(currentAppointment);
+            nurse.getUpcomingAppointments().remove(currentAppointment);
+
+            //TODO: works but need further testing
+
+            System.out.println("Response submitted.\n");
+
+        }
     }
 
     // HELPERS:
@@ -321,6 +488,26 @@ public class StaySafe {
         for(MedicalCenter center : centers){
             if(Objects.equals(center.getName().toLowerCase(Locale.ROOT), name.toLowerCase(Locale.ROOT)))
                 return center;
+        }
+        return null;
+    }
+
+    // find doctor by name:
+    private Doctor findDoctor(String firstName, String lastName){
+        for(Doctor doc : doctors){
+            //TODO: search after transforming to lowercase
+            if(Objects.equals(doc.getFirstName(), firstName) && Objects.equals(doc.getLastName(), lastName))
+                return doc;
+        }
+        return null;
+    }
+
+    // find drug by name:
+    private Drug findDrug(String name){
+        for(Drug drug : drugs){
+            //TODO: search after transforming to lowercase
+            if(Objects.equals(drug.getName(), name))
+                return drug;
         }
         return null;
     }

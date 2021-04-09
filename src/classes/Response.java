@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Response {
 
     private String description; // notes given by the doctor
-    private HashMap<Drug, Integer> treatmentPlan;
+    private HashMap<Drug, Integer> treatmentPlan; // Drug -> Time interval TODO: Drug -> Dosage + Time inerval
     private Bill bill;
 
     public Response(String description, HashMap<Drug, Integer> treatmentPlan, Bill bill) {

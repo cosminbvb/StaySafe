@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Nurse extends User{
 
-    private final Date hireDate;
+    private final Date hireDate; // TODO: convert to LocalDate
     private double salary;
 
     //TODO: add more attributes

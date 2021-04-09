@@ -1,19 +1,19 @@
 package classes;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Appointment implements Comparable<Appointment>{
 
     private Patient patient;
     private Doctor doctor; // or maybe an array too
-    private ArrayList<Nurse> nurses;
-    private Date date;
+    private Nurse nurse;
+    private LocalDate date;
     private MedicalCenter medicalCenter;
     private String patientIssueDescription;
     private Response response;
 
-    public Appointment(Patient patient, Date date, MedicalCenter medicalCenter, String patientIssueDescription) {
+    public Appointment(Patient patient, LocalDate date, MedicalCenter medicalCenter, String patientIssueDescription) {
         this.patient = patient;
         this.date = date;
         this.medicalCenter = medicalCenter;
@@ -44,19 +44,19 @@ public class Appointment implements Comparable<Appointment>{
         this.doctor = doctor;
     }
 
-    public ArrayList<Nurse> getNurses() {
-        return nurses;
+    public Nurse getNurse() {
+        return nurse;
     }
 
-    public void setNurses(ArrayList<Nurse> nurses) {
-        this.nurses = nurses;
+    public void setNurse(Nurse nurse) {
+        this.nurse = nurse;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -81,7 +81,7 @@ public class Appointment implements Comparable<Appointment>{
         return "Appointment{" +
                 "patient=" + patient.toString() +
                 ", doctor=" + doctor.toString() +
-                ", nurses=" + nurses.toString() +
+                ", nurses=" + nurse.toString() +
                 ", date=" + date +
                 ", medicalCenter=" + medicalCenter.toString() +
                 ", response=" + response.toString() +

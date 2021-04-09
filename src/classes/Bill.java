@@ -1,18 +1,23 @@
 package classes;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 public class Bill {
 
     private int id;
-    private ArrayList<Drug> drugs;
+    private List<Drug> drugs;
     private Patient patient;
     private Doctor doctor;
-    private Date date;
+    private LocalDate date;
 
-    public Bill(int id, ArrayList<Drug> drugs, Patient patient, Doctor doctor, Date date) {
-        this.id = id;
+    private static int billCount = 0;
+
+    // TODO: get total method
+
+    public Bill(List<Drug> drugs, Patient patient, Doctor doctor, LocalDate date) {
+        this.id = ++billCount;
         this.drugs = drugs;
         this.patient = patient;
         this.doctor = doctor;
@@ -27,11 +32,11 @@ public class Bill {
         this.id = id;
     }
 
-    public ArrayList<Drug> getDrugs() {
+    public List<Drug> getDrugs() {
         return drugs;
     }
 
-    public void setDrugs(ArrayList<Drug> drugs) {
+    public void setDrugs(List<Drug> drugs) {
         this.drugs = drugs;
     }
 
@@ -51,11 +56,11 @@ public class Bill {
         this.doctor = doctor;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
