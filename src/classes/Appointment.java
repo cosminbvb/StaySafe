@@ -16,13 +16,14 @@ public class Appointment implements Comparable<Appointment>{
 
     private static long nextId;
 
-    public Appointment(long id, Patient patient, LocalDate date, MedicalCenter medicalCenter, String patientIssueDescription) {
+    public Appointment(long id, Patient patient, LocalDate date, MedicalCenter medicalCenter,
+                       String patientIssueDescription, String status) {
         this.id = id;
         this.patient = patient;
         this.date = date;
         this.medicalCenter = medicalCenter;
         this.patientIssueDescription = patientIssueDescription;
-        this.status = "pending";
+        this.status = status;
     }
 
 

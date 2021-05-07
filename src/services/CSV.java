@@ -53,7 +53,7 @@ public final class CSV {
                 lineNumber++;
         }
         //update the file:
-        if(lineNumber < lines.size()){
+        if(lineNumber <= lines.size()){
             lines.set(lineNumber - 1, newData);
             Files.write(path, lines);
         }

@@ -211,7 +211,7 @@ public class StaySafe {
             long centerId = Long.parseLong(line[6]);
             MedicalCenter mc = findMedicalCenterById(centers, centerId);
 
-            Appointment appointment = new Appointment(id, patient, LocalDate.parse(line[5]), mc, line[7]);
+            Appointment appointment = new Appointment(id, patient, LocalDate.parse(line[5]), mc, line[7], status);
 
             Doctor doctor = null;
             Nurse nurse = null;
@@ -437,7 +437,7 @@ public class StaySafe {
             System.out.println("Start by describing the issue:");
             String description = input.nextLine();
 
-            Appointment requested = new Appointment(Appointment.getNextId(), (Patient) user, LocalDate.now(), mc, description);
+            Appointment requested = new Appointment(Appointment.getNextId(), (Patient) user, LocalDate.now(), mc, description, "pending");
             pendingAppointments.add(requested);
             System.out.println("Appointment requested. You will be contacted shortly, once your request has been processed\n");
             CSV.writeCSV("appointments.csv", requested.getCSV());
@@ -538,8 +538,8 @@ public class StaySafe {
             patient.addUpcomingAppointment(appointment); // insert it into the patient's schedule
 
             appointment.setStatus("assigned");
-//            System.out.println(appointment.getCSV());
-//            System.out.println(patient.getUpcomingAppointments().first());
+            System.out.println(appointment.hashCode());
+
             // update the appointment details in the csv file
             try {
                 CSV.updateCSV("appointments.csv", oldData, appointment.getCSV());
@@ -664,8 +664,7 @@ public class StaySafe {
 
 
             currentAppointment.setStatus("completed");
-            System.out.println(oldData);
-            System.out.println(currentAppointment.getCSV());
+
             // update the appointment details in the csv file
             try {
                 CSV.updateCSV("appointments.csv", oldData, currentAppointment.getCSV());
