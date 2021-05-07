@@ -1,31 +1,19 @@
 package classes;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Nurse extends User{
 
-    private final Date hireDate; // TODO: convert to LocalDate
+    private final LocalDate hireDate;
     private double salary;
 
     //TODO: add more attributes
 
-    public Nurse(String firstName, String lastName, long CNP, String dateOfBirth, String phoneNumber,
-                 String emailAddress, String password, Date hireDate, double salary) {
-        super(firstName, lastName, CNP, dateOfBirth, phoneNumber, emailAddress, password);
+    public Nurse(long id, String firstName, String lastName, long CNP, String dateOfBirth, String phoneNumber,
+                 String emailAddress, String password, LocalDate hireDate, double salary) {
+        super(id, firstName, lastName, CNP, dateOfBirth, phoneNumber, emailAddress, password);
         this.hireDate = hireDate;
         this.salary = salary;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
-    public Date getHireDate() {
-        return hireDate;
     }
 
     @Override
@@ -38,4 +26,11 @@ public class Nurse extends User{
                 ", salary=" + salary +
                 '}';
     }
+
+    public String getCSV(){
+        String[] data = {String.valueOf(id), firstName, lastName, String.valueOf(CNP),
+                dateOfBirth, phoneNumber, emailAddress, password, String.valueOf(salary), String.valueOf(hireDate)};
+        return String.join(",", data);
+    }
+
 }

@@ -1,77 +1,69 @@
 package classes;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bill {
 
-    private int id;
+    private long id;
     private List<Drug> drugs;
-    private Patient patient;
-    private Doctor doctor;
+    //private Patient patient;
+    //private Doctor doctor;
     private LocalDate date;
+    private final long total;
 
-    private static int billCount = 0;
+    private static long nextId;
 
-    // TODO: get total method
-
-    public Bill(List<Drug> drugs, Patient patient, Doctor doctor, LocalDate date) {
-        this.id = ++billCount;
+    public Bill(long id, List<Drug> drugs, LocalDate date) {
+        this.id = id;
         this.drugs = drugs;
-        this.patient = patient;
-        this.doctor = doctor;
+        // this.patient = patient;
+        // this.doctor = doctor;
         this.date = date;
+        this.total = computeTotal();
     }
 
-    public int getId() {
+    protected long computeTotal(){
+        long price = 0;
+        for (Drug d : drugs) {
+            price += d.getPrice();
+        }
+        return price;
+    }
+
+    public long getTotal() {
+        return total;
+    }
+
+    public static long getNextId() {
+        return nextId++;
+    }
+
+    public static void setNextId(long nextId) {
+        Bill.nextId = nextId;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public List<Drug> getDrugs() {
-        return drugs;
-    }
-
-    public void setDrugs(List<Drug> drugs) {
-        this.drugs = drugs;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 
     @Override
     public String toString() {
         return "Bill{" +
                 "id=" + id +
                 ", drugs=" + drugs.toString() +
-                ", patient=" + patient.toString() +
-                ", doctor=" + doctor.toString() +
                 ", date=" + date +
                 '}';
     }
+
+    public String getCSV(){
+        String[] data = {String.valueOf(id), String.valueOf(total), String.valueOf(date)};
+        return String.join(",", data);
+    }
+
 }

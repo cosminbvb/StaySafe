@@ -5,60 +5,48 @@ import java.util.Objects;
 
 public class Drug {
 
+    private long id;
     private String name;
     private String manufacturer;
     private double price;
     private String prospect;
     private HashMap<String, Double> ingredients;
 
+    private static long nextId;
+
     //TODO: list of side effects
 
-    public Drug(String name, String manufacturer, double price, String prospect, HashMap<String, Double> ingredients) {
+    public Drug(long id, String name, String manufacturer, double price, String prospect, HashMap<String, Double> ingredients) {
+        this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
         this.price = price;
         this.prospect = prospect;
         this.ingredients = ingredients;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public static long getNextId() {
+        return nextId++;
+    }
+
+    public static void setNextId(long nextId) {
+        Drug.nextId = nextId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public HashMap<String, Double> getIngredients() {
         return ingredients;
-    }
-
-    public void setIngredients(HashMap<String, Double> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getProspect() {
-        return prospect;
-    }
-
-    public void setProspect(String prospect) {
-        this.prospect = prospect;
     }
 
     @Override
@@ -85,4 +73,10 @@ public class Drug {
                 ", ingredients=" + ingredients.toString() +
                 '}';
     }
+
+    public String getCSV(){
+        String[] data = {String.valueOf(id), name, manufacturer, String.valueOf(price), prospect};
+        return String.join(",", data);
+    }
+
 }

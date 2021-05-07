@@ -7,29 +7,30 @@ public class Main {
     public static void main(String[] args) {
 
         StaySafe app = StaySafe.getInstance();
+        Audit audit = Audit.getInstance();
 
         listCommands();
 
         Scanner input = new Scanner(System.in);
         while(true){
 
-            System.out.println("Enter command code (enter 0 too look at them again):");
+            System.out.println("Enter command code (enter 0 to look at them again):");
             int commandCode = Integer.parseInt(input.nextLine());
 
             switch (commandCode) {
-                case 0 -> listCommands();
-                case 1 -> app.signUp();
-                case 2 -> app.logIn();
-                case 3 -> app.logOut();
-                case 4 -> app.searchCenter();
-                case 5 -> app.searchDoctor();
-                case 6 -> app.getUpcomingAppointments();
-                case 7 -> System.exit(1);
-                case 8 -> app.requestAppointment();
-                case 9 -> app.getAppointmentHistory();
-                case 10 -> app.processAppointment();
-                case 11 -> app.searchDrug();
-                case 12 -> app.giveResponse();
+                case 0 -> { listCommands(); audit.log("List commands"); }
+                case 1 -> { app.signUp(); audit.log("Sign up"); }
+                case 2 -> { app.logIn(); audit.log("Sign in"); }
+                case 3 -> { app.logOut(); audit.log("Sign out"); }
+                case 4 -> { app.searchCenter(); audit.log("Search center"); }
+                case 5 -> { app.searchDoctor(); audit.log("Search doctor"); }
+                case 6 -> { app.getUpcomingAppointments(); audit.log("See upcoming appointments"); }
+                case 7 -> { System.exit(1); audit.log("Exit"); }
+                case 8 -> { app.requestAppointment(); audit.log("Request appointment"); }
+                case 9 -> { app.getAppointmentHistory(); audit.log("See appointments history"); }
+                case 10 -> { app.processAppointment(); audit.log("Process appointment"); }
+                case 11 -> { app.searchDrug(); audit.log("Search drug"); }
+                case 12 -> { app.giveResponse(); audit.log("Doctor - give response"); }
             }
 
         }

@@ -1,7 +1,5 @@
 package classes;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.TreeSet;
 
 public class Patient extends User{
@@ -10,9 +8,8 @@ public class Patient extends User{
 
     //TODO: add more attributes (e.g. pendingAppointments)
 
-
-    public Patient(String firstName, String lastName, long CNP, String dateOfBirth, String phoneNumber, String emailAddress, String password) {
-        super(firstName, lastName, CNP, dateOfBirth, phoneNumber, emailAddress, password);
+    public Patient(long id, String firstName, String lastName, long CNP, String dateOfBirth, String phoneNumber, String emailAddress, String password) {
+        super(id, firstName, lastName, CNP, dateOfBirth, phoneNumber, emailAddress, password);
     }
 
     public void addToHistory(Appointment appointment){
@@ -29,7 +26,17 @@ public class Patient extends User{
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", CNP=" + CNP +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
+                ", password='" + password + '\'' +
                 '}';
+    }
+
+    public String getCSV(){
+        String[] data = {String.valueOf(id), firstName, lastName, String.valueOf(CNP),
+                dateOfBirth, phoneNumber, emailAddress, password};
+        return String.join(",", data);
     }
 }

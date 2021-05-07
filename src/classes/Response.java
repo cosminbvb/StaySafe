@@ -4,38 +4,35 @@ import java.util.HashMap;
 
 public class Response {
 
+    private long id;
     private String description; // notes given by the doctor
-    private HashMap<Drug, Integer> treatmentPlan; // Drug -> Time interval TODO: Drug -> Dosage + Time inerval
+    private HashMap<Drug, Integer> treatmentPlan; // Drug -> Time interval
+    // TODO: Drug -> Dosage + Time interval
     private Bill bill;
 
-    public Response(String description, HashMap<Drug, Integer> treatmentPlan, Bill bill) {
+    private static long nextId;
+
+    public Response(long id, String description, HashMap<Drug, Integer> treatmentPlan, Bill bill) {
+        this.id = id;
         this.description = description;
         this.treatmentPlan = treatmentPlan;
         this.bill = bill;
     }
 
-    public String getDescription() {
-        return description;
+    public long getId() {
+        return id;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public HashMap<Drug, Integer> getTreatmentPlan() {
-        return treatmentPlan;
+    public static long getNextId() {
+        return nextId++;
     }
 
-    public void setTreatmentPlan(HashMap<Drug, Integer> treatmentPlan) {
-        this.treatmentPlan = treatmentPlan;
-    }
-
-    public Bill getBill() {
-        return bill;
-    }
-
-    public void setBill(Bill bill) {
-        this.bill = bill;
+    public static void setNextId(long nextId) {
+        Response.nextId = nextId;
     }
 
     @Override
@@ -45,5 +42,10 @@ public class Response {
                 ", treatmentPlan=" + treatmentPlan.toString() +
                 ", bill=" + bill.toString() +
                 '}';
+    }
+
+    public String getCSV(){
+        String[] data = {String.valueOf(id), description, String.valueOf(bill.getId())};
+        return String.join(",", data);
     }
 }

@@ -1,10 +1,10 @@
 package classes;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Appointment implements Comparable<Appointment>{
 
+    private long id;
     private Patient patient;
     private Doctor doctor; // or maybe an array too
     private Nurse nurse;
@@ -12,13 +12,20 @@ public class Appointment implements Comparable<Appointment>{
     private MedicalCenter medicalCenter;
     private String patientIssueDescription;
     private Response response;
+    private String status; // pending / assigned / completed (will be available in the history section)
 
-    public Appointment(Patient patient, LocalDate date, MedicalCenter medicalCenter, String patientIssueDescription) {
+    private static long nextId;
+
+    public Appointment(long id, Patient patient, LocalDate date, MedicalCenter medicalCenter, String patientIssueDescription) {
+        this.id = id;
         this.patient = patient;
         this.date = date;
         this.medicalCenter = medicalCenter;
         this.patientIssueDescription = patientIssueDescription;
+        this.status = "pending";
     }
+
+
 
     public String getPatientIssueDescription() {
         return patientIssueDescription;
@@ -42,6 +49,14 @@ public class Appointment implements Comparable<Appointment>{
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Nurse getNurse() {
@@ -76,15 +91,31 @@ public class Appointment implements Comparable<Appointment>{
         this.response = response;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public static long getNextId() {
+        return nextId++;
+    }
+
+    public static void setNextId(long nextId) {
+        Appointment.nextId = nextId;
+    }
+
     @Override
     public String toString() {
         return "Appointment{" +
                 "patient=" + patient.toString() +
                 ", doctor=" + doctor.toString() +
                 ", nurses=" + nurse.toString() +
-                ", date=" + date +
+                ", date=" + date.toString() +
                 ", medicalCenter=" + medicalCenter.toString() +
-                ", response=" + response.toString() +
+                ", response=" + (response == null ? " " : response.toString()) +
                 '}';
     }
 
@@ -92,4 +123,28 @@ public class Appointment implements Comparable<Appointment>{
     public int compareTo(Appointment o) {
         return this.date.compareTo(o.getDate());
     }
+
+
+    public String getCSV(){
+        String[] data;
+        switch (status) {
+            case "pending" -> data = new String[]{String.valueOf(id), status,
+                    String.valueOf(patient.getId()), "not assigned", "not assigned",
+                    String.valueOf(date), String.valueOf(medicalCenter.getId()),
+                    patientIssueDescription, "not evaluated"};
+            case "assigned" -> data = new String[]{String.valueOf(id), status,
+                    String.valueOf(patient.getId()),
+                    String.valueOf(doctor.getId()), String.valueOf(nurse.getId()),
+                    String.valueOf(date), String.valueOf(medicalCenter.getId()),
+                    patientIssueDescription, "not evaluated"};
+            case "completed" -> data = new String[]{String.valueOf(id), status,
+                    String.valueOf(patient.getId()),
+                    String.valueOf(doctor.getId()), String.valueOf(nurse.getId()),
+                    String.valueOf(date), String.valueOf(medicalCenter.getId()),
+                    patientIssueDescription, String.valueOf(response.getId())};
+            default -> throw new IllegalStateException("Unexpected value: " + status);
+        }
+        return String.join(",", data);
+    }
+
 }

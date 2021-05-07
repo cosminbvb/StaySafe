@@ -2,20 +2,28 @@ package classes;
 
 public class MedicalCenter {
 
-    private int id;
+    private long id;
     private String name;
     private String city;
     private String address;
     private long capacity;
 
-    private static int centerCount = 0;
+    private static long nextId;
 
-    public MedicalCenter(String name, String city, String address, long capacity) {
-        this.id = ++centerCount;
+    public MedicalCenter(long id, String name, String city, String address, long capacity) {
+        this.id = id;
         this.name = name;
         this.city = city;
         this.address = address;
         this.capacity = capacity;
+    }
+
+    public static long getNextId() {
+        return nextId++;
+    }
+
+    public static void setNextId(long nextId) {
+        MedicalCenter.nextId = nextId;
     }
 
     public String getName() {
@@ -50,11 +58,11 @@ public class MedicalCenter {
         this.capacity = capacity;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -68,4 +76,11 @@ public class MedicalCenter {
                 ", capacity=" + capacity +
                 '}';
     }
+
+
+    public String getCSV(){
+        String[] data = {String.valueOf(id), name, city, address, String.valueOf(capacity)};
+        return String.join(",", data);
+    }
+
 }
