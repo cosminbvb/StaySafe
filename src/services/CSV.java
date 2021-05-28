@@ -6,21 +6,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public final class CSV {
 
-    private static CSV instance = null;
+    private CSV(){}
 
-    public static CSV getInstance(){
-        if (instance == null){
-            instance = new CSV();
-        }
-        return instance;
-    }
-
-    protected static void writeCSV(String file, String data){
+    public static void writeCSV(String file, String data){
         try{
             FileWriter fileWriter = new FileWriter("data/"+file, true); // append = true
             fileWriter.write(data + "\n");
@@ -30,7 +22,7 @@ public final class CSV {
         }
     }
 
-    protected static List<String []> readCSV(String file){
+    public static List<String []> readCSV(String file){
         List<String []> content = null;
         try{
             content = Files.readAllLines(Paths.get("data/"+file)).stream().
@@ -41,7 +33,7 @@ public final class CSV {
         return content;
     }
 
-    protected static void updateCSV(String file, String oldData, String newData) throws IOException {
+    public static void updateCSV(String file, String oldData, String newData) throws IOException {
         Path path = Paths.get("data/"+file);
         //find the line number of the oldData (line number indexed from 1)
         int lineNumber = 1;

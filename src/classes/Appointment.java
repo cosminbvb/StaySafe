@@ -1,6 +1,7 @@
 package classes;
 
 import java.time.LocalDate;
+import java.sql.Date;
 
 public class Appointment implements Comparable<Appointment>{
 
@@ -26,7 +27,19 @@ public class Appointment implements Comparable<Appointment>{
         this.status = status;
     }
 
-
+    public Appointment(long id, Patient patient, Doctor doctor, Nurse nurse, LocalDate date,
+                       MedicalCenter medicalCenter, String patientIssueDescription,
+                       Response response, String status) {
+        this.id = id;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.nurse = nurse;
+        this.date = date;
+        this.medicalCenter = medicalCenter;
+        this.patientIssueDescription = patientIssueDescription;
+        this.response = response;
+        this.status = status;
+    }
 
     public String getPatientIssueDescription() {
         return patientIssueDescription;
@@ -68,8 +81,8 @@ public class Appointment implements Comparable<Appointment>{
         this.nurse = nurse;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public Date getDate() {
+        return Date.valueOf(date);
     }
 
     public void setDate(LocalDate date) {
@@ -111,7 +124,8 @@ public class Appointment implements Comparable<Appointment>{
     @Override
     public String toString() {
         return "Appointment{" +
-                "patient=" + patient.toString() +
+                "id="+id +
+                ", patient=" + patient.toString() +
                 ", doctor=" + doctor.toString() +
                 ", nurses=" + nurse.toString() +
                 ", date=" + date.toString() +
@@ -122,7 +136,7 @@ public class Appointment implements Comparable<Appointment>{
 
     @Override
     public int compareTo(Appointment o) {
-        return this.date.compareTo(o.getDate());
+        return this.date.compareTo(o.getDate().toLocalDate());
     }
 
 

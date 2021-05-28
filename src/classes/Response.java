@@ -35,6 +35,14 @@ public class Response {
         Response.nextId = nextId;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Bill getBill() {
+        return bill;
+    }
+
     @Override
     public String toString() {
         return "Response{" +

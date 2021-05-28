@@ -63,6 +63,18 @@ public abstract class User {
         User.nextId = nextId;
     }
 
+    public long getCNP() {
+        return CNP;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

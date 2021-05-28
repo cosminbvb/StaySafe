@@ -1,5 +1,6 @@
 package classes;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,6 +22,13 @@ public class Bill {
         // this.doctor = doctor;
         this.date = date;
         this.total = computeTotal();
+    }
+
+    public Bill(long id, List<Drug> drugs, LocalDate date, long total) {
+        this.id = id;
+        this.drugs = drugs;
+        this.date = date;
+        this.total = total;
     }
 
     protected long computeTotal(){
@@ -51,6 +59,13 @@ public class Bill {
         this.id = id;
     }
 
+    public Date getDate() {
+        return Date.valueOf(date);
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     @Override
     public String toString() {

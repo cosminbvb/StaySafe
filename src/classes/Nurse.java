@@ -1,5 +1,6 @@
 package classes;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Nurse extends User{
@@ -13,6 +14,18 @@ public class Nurse extends User{
                  String emailAddress, String password, LocalDate hireDate, double salary) {
         super(id, firstName, lastName, CNP, dateOfBirth, phoneNumber, emailAddress, password);
         this.hireDate = hireDate;
+        this.salary = salary;
+    }
+
+    public Date getHireDate() {
+        return Date.valueOf(hireDate);
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 

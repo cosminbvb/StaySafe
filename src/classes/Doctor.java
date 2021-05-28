@@ -1,6 +1,10 @@
 package classes;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class Doctor extends User {
 
@@ -14,6 +18,26 @@ public class Doctor extends User {
         this.speciality = speciality;
         this.salary = salary;
         this.hireDate = hireDate;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public Date getHireDate() {
+        return Date.valueOf(hireDate);
     }
 
     @Override
