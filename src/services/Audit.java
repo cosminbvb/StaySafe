@@ -19,7 +19,7 @@ public class Audit {
         try {
             FileWriter fileWriter = new FileWriter("data/log.csv", true); // append = true
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            fileWriter.write(action + ", " + timestamp.toString() + "\n");
+            fileWriter.write(action + ", " + timestamp.toString() + ", " + Thread.currentThread().getName() + "\n");
             fileWriter.close();
         } catch (IOException e) {
             System.out.println("Couldn't open the log file.");
