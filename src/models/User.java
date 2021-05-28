@@ -1,4 +1,4 @@
-package classes;
+package models;
 
 import java.util.Objects;
 import java.util.TreeSet;

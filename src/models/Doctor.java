@@ -1,10 +1,7 @@
-package classes;
+package models;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class Doctor extends User {
 

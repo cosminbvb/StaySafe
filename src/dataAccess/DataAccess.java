@@ -1,6 +1,7 @@
-package classes;
+package dataAccess;
 
-import java.util.Objects;
+import models.*;
+
 import java.util.TreeSet;
 
 public interface DataAccess {

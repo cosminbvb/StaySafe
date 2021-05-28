@@ -1,5 +1,6 @@
-package classes;
+package dataAccess;
 
+import models.*;
 import services.CSV;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
 
 // stores the relevant data in the main memory and uses csv files for persistence
 // meanwhile DataAccessDatabase uses a database and does not store any heavy data in the main memory
-public class DataAccessMainMemory implements DataAccess{
+public class DataAccessMainMemory implements DataAccess {
 
     private static DataAccessMainMemory instance = null;
 

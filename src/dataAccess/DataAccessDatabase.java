@@ -1,12 +1,13 @@
-package classes;
+package dataAccess;
 
+import models.*;
 import services.Database;
 
 import java.sql.ResultSet;
 import java.util.*;
 
 // DataAccessDatabase uses a database for persistence and does not store any heavy data in the main memory
-public class DataAccessDatabase implements DataAccess{
+public class DataAccessDatabase implements DataAccess {
 
     private static DataAccessDatabase instance = null;
 

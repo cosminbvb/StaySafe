@@ -1,10 +1,11 @@
 package services;
 
-import classes.*;
+import models.*;
+import dataAccess.DataAccess;
+import dataAccess.DataAccessDatabase;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.*;
 
 public class StaySafe {
@@ -27,7 +28,7 @@ public class StaySafe {
 
     private StaySafe(){}
 
-    public void signUp() throws SQLException {
+    public void signUp(){
         if(user != null){
             System.out.println("You are already logged in.\n");
             return;

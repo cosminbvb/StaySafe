@@ -1,11 +1,10 @@
 package services;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 
         StaySafe app = StaySafe.getInstance();
         Audit audit = Audit.getInstance();

@@ -1,11 +1,8 @@
 package services;
 
-import classes.*;//
-import com.mysql.cj.protocol.Resultset;
+import models.*;//
 
-import javax.xml.transform.Result;
 import java.sql.*;
-import java.util.List;
 
 public final class Database {
 
