@@ -1,7 +1,12 @@
 ## Stay Safe 
 #### In progress - Medical appointments system made as an assignment for Uni 
 
-### Classes
+### Persistence 
+- Database (MySQL)
+- CSV  
+Both classes implement the DataAccess interface
+  
+### Models
 - abstract class User
 - Patient, Doctor, Nurse (extend User)
 - Medical Center
